@@ -6,6 +6,14 @@ export type ParameterValue = EthersAbiResult[keyof EthersAbiResult] | CallDataIn
 export type ParameterMap = { [parameterName: string]: ParameterValue };
 export type CallDataInformation = { abiFileName: string; functionName: string; functionParameters: ParameterMap };
 
+export const isCalldataInformation = (value: unknown): value is CallDataInformation =>
+    value !== null &&
+    value !== undefined &&
+    typeof value === 'object' &&
+    'abiFileName' in value &&
+    'functionName' in value &&
+    'functionParameters' in value;
+
 const parseParameterValue = async (parameter: ParamType, decodedData: ParameterValue): Promise<ParameterValue> => {
     if (parameter.baseType === 'array' && parameter.arrayChildren && Array.isArray(decodedData)) {
         const result = [];
