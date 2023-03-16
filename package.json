@@ -1,32 +1,42 @@
 {
     "name": "abi-parser",
     "version": "0.1.0",
-    "main": "index.js",
+    "private": "true",
     "scripts": {
-        "parse-call-data": "ts-node --transpile-only scripts/parse-call-data.ts",
-        "lint": "eslint --cache --fix . && tsc --noEmit",
+        "build": "tsc",
+        "clean": "rm -rf build",
+        "parse-call-data": "ts-node --transpile-only src/index.ts",
+        "lint": "eslint --ext .ts --ext .js .",
         "test": "jest"
     },
     "devDependencies": {
-        "@types/jest": "^29.2.3",
-        "@types/node": "^18.11.9",
-        "@typescript-eslint/eslint-plugin": "^5.43.0",
-        "@typescript-eslint/parser": "^5.43.0",
-        "eslint": "^8.27.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-import": "^2.26.0",
+        "@types/jest": "^29.5.0",
+        "@types/node": "^18.15.11",
+        "@types/superagent": "^4.1.16",
+        "@typescript-eslint/eslint-plugin": "^5.57.1",
+        "@typescript-eslint/parser": "^5.57.1",
+        "eslint": "^8.37.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-import": "^2.27.5",
         "eslint-plugin-no-null": "^1.0.2",
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-promise": "^6.1.1",
-        "jest": "^29.3.1",
-        "prettier": "^2.7.1",
-        "ts-jest": "^29.0.3"
+        "eslint-plugin-jest": "^27.2.1",
+        "eslint-plugin-filenames": "^1.3.2",
+        "eslint-plugin-jest-formatting": "^3.1.0",
+        "jest": "^29.5.0",
+        "jest-junit": "^15.0.0",
+        "prettier": "^2.8.7",
+        "ts-jest": "^29.1.0",
+        "typescript": "^5.0.3",
+        "ts-node": "^10.9.1"
     },
     "dependencies": {
         "ansi-colors": "^4.1.3",
-        "ethers": "^5.7.2",
-        "ts-node": "^10.9.1",
-        "typescript": "^4.8.4"
+        "dotenv": "^16.0.3",
+        "ethers": "^6.2.3",
+        "superagent": "^8.0.9",
+        "superagent-throttle": "^1.0.1"
     }
 }
