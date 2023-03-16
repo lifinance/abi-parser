@@ -1,26 +1,26 @@
 import { getAbis, getFunctionsBySighash } from './abi-loader';
-import { ethers } from 'ethers';
+import { FunctionFragment, Interface } from 'ethers';
 
 test('Load ABIs from the "abis" directory of the file system', () => {
     const abis = getAbis();
 
-    expect(abis).toHaveLength(2);
+    expect(abis.length).toBeGreaterThanOrEqual(2);
 
-    expect(abis[0].fileName).toEqual('DiamondABI.json');
-    expect(abis[0].ethersInterface).toBeInstanceOf(ethers.utils.Interface);
+    expect(abis[abis.length - 2].fileName).toEqual('DiamondABI.json');
+    expect(abis[abis.length - 2].ethersInterface).toBeInstanceOf(Interface);
 
-    expect(abis[1].fileName).toEqual('FeeCollectorABI.json');
-    expect(abis[1].ethersInterface).toBeInstanceOf(ethers.utils.Interface);
+    expect(abis[abis.length - 1].fileName).toEqual('FeeCollectorABI.json');
+    expect(abis[abis.length - 1].ethersInterface).toBeInstanceOf(Interface);
 });
 
 test('Return a list of function fragments for the given sighash', () => {
-    const functions = getFunctionsBySighash('0xa4baa10c');
+    const functions = getFunctionsBySighash('0x612ad9cb');
 
     expect(functions).toHaveLength(1);
 
     expect(functions[0].fileName).toEqual('DiamondABI.json');
-    expect(functions[0].functionFragment).toBeInstanceOf(ethers.utils.FunctionFragment);
-    expect(functions[0].functionFragment.name).toEqual('swapTokensGeneric');
+    expect(functions[0].functionFragment).toBeInstanceOf(FunctionFragment);
+    expect(functions[0].functionFragment.name).toEqual('addressCanExecuteMethod');
 });
 
 test('Return an empty list for a unknown sighash', () => {

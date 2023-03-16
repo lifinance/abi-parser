@@ -1,8 +1,9 @@
-import { BigNumber, ethers } from 'ethers';
+import { AbiCoder, ParamType, Result } from 'ethers';
 import { getFunctionsBySighash } from './abi-loader';
-import { ParamType, Result as EthersAbiResult } from '@ethersproject/abi';
+import { AMAROK_PAYLOAD_ABI } from './abis/amarok';
+import { STARGATE_PAYLOAD_ABI } from './abis/stargate';
 
-export type ParameterValue = EthersAbiResult[keyof EthersAbiResult] | CallDataInformation;
+export type ParameterValue = Result[keyof Result] | CallDataInformation | BigInteger;
 export type ParameterMap = { [parameterName: string]: ParameterValue };
 export type CallDataInformation = { abiFileName: string; functionName: string; functionParameters: ParameterMap };
 
@@ -14,49 +15,45 @@ export const isCalldataInformation = (value: unknown): value is CallDataInformat
     'functionName' in value &&
     'functionParameters' in value;
 
-const parseParameterValue = async (parameter: ParamType, decodedData: ParameterValue): Promise<ParameterValue> => {
+const parseParameterValue = (parameter: ParamType, decodedData: ParameterValue): ParameterValue => {
     if (parameter.baseType === 'array' && parameter.arrayChildren && Array.isArray(decodedData)) {
         const result = [];
         for (const decodedEntry of decodedData) {
-            result.push(await parseParameterValue(parameter.arrayChildren, decodedEntry));
+            result.push(parseParameterValue(parameter.arrayChildren, decodedEntry));
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return result;
     }
 
-    if (parameter.baseType === 'tuple') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (parameter.baseType === 'tuple' && parameter.components !== null) {
         return buildParameterMap(parameter.components, decodedData);
     }
 
-    if (BigNumber.isBigNumber(decodedData)) {
+    if (typeof decodedData === 'bigint') {
         return decodedData.toString();
     }
 
     if (typeof decodedData === 'string' && decodedData.startsWith('0x')) {
-        const parsedCallDatas = await parseCallData(decodedData);
+        const parsedCallDatas = parseCallData(decodedData);
         if (parsedCallDatas.length > 0) {
             return parsedCallDatas;
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return decodedData;
 };
 
-const buildParameterMap = async (parameters: Array<ParamType>, decodedData: EthersAbiResult) => {
+const buildParameterMap = (parameters: ReadonlyArray<ParamType>, decodedData: Result) => {
     const parameterMap: ParameterMap = {};
 
     for (const parameter of parameters) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        parameterMap[parameter.name] = await parseParameterValue(parameter, decodedData[parameter.name]);
+        parameterMap[parameter.name] = parseParameterValue(parameter, decodedData[parameter.name]);
     }
 
     return parameterMap;
 };
 
-export const parseCallData = async (encodedCallData: string) => {
+export const parseCallData = (encodedCallData: string): Array<CallDataInformation> => {
     const hexCallData = encodedCallData.startsWith('0x') ? encodedCallData : `0x${encodedCallData}`;
     const callSighash = hexCallData.substring(0, 10); // function signature starts with 0x and has 4 bytes
     const callInputs = `0x${hexCallData.substring(10)}`;
@@ -65,14 +62,35 @@ export const parseCallData = async (encodedCallData: string) => {
     const results: Array<CallDataInformation> = [];
 
     for (const { functionFragment, fileName } of functionFragments) {
-        const decodedFunctionData = ethers.utils.defaultAbiCoder.decode(functionFragment.inputs, callInputs);
-        const functionParameters = await buildParameterMap(functionFragment.inputs, decodedFunctionData);
+        try {
+            const decodedFunctionData = AbiCoder.defaultAbiCoder().decode(functionFragment.inputs, callInputs);
+            const functionParameters = buildParameterMap(functionFragment.inputs, decodedFunctionData);
 
-        results.push({
-            abiFileName: fileName,
-            functionName: functionFragment.name,
-            functionParameters,
-        });
+            results.push({
+                abiFileName: fileName,
+                functionName: functionFragment.name,
+                functionParameters,
+            });
+        } catch (e) {
+            /* empty */
+        }
+    }
+
+    if (results.length === 0) {
+        const abis = [STARGATE_PAYLOAD_ABI, AMAROK_PAYLOAD_ABI];
+
+        for (const abi of abis) {
+            try {
+                const decodedFunctionData = AbiCoder.defaultAbiCoder().decode(abi, hexCallData);
+                results.push({
+                    abiFileName: '',
+                    functionName: '',
+                    functionParameters: decodedFunctionData,
+                });
+            } catch (e) {
+                /* empty */
+            }
+        }
     }
 
     return results;
