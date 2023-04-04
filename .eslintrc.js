@@ -15,16 +15,19 @@ module.exports = {
         'plugin:import/recommended',
         'plugin:import/typescript',
         'plugin:promise/recommended',
-        'plugin:prettier/recommended',
+        'prettier',
     ],
-    plugins: ['no-null', 'prefer-arrow'],
+    plugins: ['no-null', 'prefer-arrow', 'prettier'],
     rules: {
         'newline-before-return': 'error',
         'prefer-template': 'error',
+        'no-await-in-loop': 'error',
         'object-shorthand': ['error', 'always'],
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
         'no-null/no-null': 'error',
+        'semi': ['error', 'always'],
+        'prettier/prettier': 'error',
         'prefer-arrow/prefer-arrow-functions': [
             'error',
             {
