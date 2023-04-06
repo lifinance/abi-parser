@@ -34,7 +34,6 @@ export const loadAbiFromString = (address: string, abi: string, chain: Chain) =>
     cachedAbis?.push({ fileName, ethersInterface })
 
     fs.writeFileSync(path.resolve(ABI_DIRECTORY, fileName), JSON.stringify(JSON.parse(abi), undefined, 4))
-    // fs.writeFileSync(path.resolve(ABI_DIRECTORY, fileName), abi);
 
     cachedFunctionFragmentsBySighash = groupFunctionFragmentsBySighash(getAbis())
 }

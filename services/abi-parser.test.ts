@@ -1,6 +1,6 @@
 import { FunctionFragment } from 'ethers'
 import * as abiLoader from './abi-loader'
-import { parseCallData } from './abi-parser'
+import { parseCallData } from './parser'
 
 const transferFunctionFragment = FunctionFragment.from('transfer(address _to, uint256 _value)')
 const wrappedCallFunctionFragment: FunctionFragment = FunctionFragment.from('wrappedCall(address _to, bytes _calldata)')
@@ -190,7 +190,8 @@ test('Throw an error if given call data is malformed', () => {
             '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280'
         )
     ).toThrowError(
-        'invalid BytesLike value (argument="value", value="0x000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280", code=INVALID_ARGUMENT, version=6.1.0)'
+        'invalid BytesLike value (argument="value",' +
+            ' value="0x000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280", code=INVALID_ARGUMENT, version=6.2.3)'
     )
 })
 
