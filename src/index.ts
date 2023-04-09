@@ -18,7 +18,7 @@ const cache = (c: CallDataInformation) =>
     // eslint-disable-next-line no-underscore-dangle
     [...(c.functionParameters._swapData || []), c.functionParameters._amarokData, c.functionParameters._stargateData]
         .filter((d) => d !== undefined && d.callTo !== undefined)
-        .map(async (d) => cacheAbi(chains, (await d?.callTo) as string))
+        .map((d) => cacheAbi(chains, d?.callTo as string))
 
 const run = async () => {
     const callDataStrings =
