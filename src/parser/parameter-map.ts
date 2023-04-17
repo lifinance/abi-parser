@@ -27,7 +27,6 @@ export type StargateDataStruct = {
 }
 
 export type CallDataInformation = {
-    abiFileName: string
     functionName: string
     functionParameters: ParameterMap
 }
