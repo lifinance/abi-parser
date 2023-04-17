@@ -1,7 +1,7 @@
 import { green, red, yellow } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
-import { cacheAbi } from './abi-loader'
+import { cacheAbi } from './abi-loader/abi-loader'
 import { patchBigint } from './bigint/patch-bigint'
 import { initChains } from './chains'
 import { CallDataInformation } from './parser'

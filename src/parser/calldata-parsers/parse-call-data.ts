@@ -1,6 +1,6 @@
 import { AbiCoder } from 'ethers'
 
-import { getFunctionsBySighash } from '../../abi-loader'
+import { getFunctionsBySighash } from '../../abi-loader/abi-loader'
 import { buildParameterMap } from '../build-parameter-map'
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'

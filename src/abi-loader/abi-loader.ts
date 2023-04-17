@@ -2,7 +2,7 @@ import { dataSlice, FunctionFragment, id, Interface } from 'ethers'
 import fs from 'fs'
 import path from 'path'
 
-import { Chain, ChainConfig, getAbi } from './chains'
+import { Chain, ChainConfig, getAbi } from '../chains'
 
 const ABI_DIRECTORY = path.resolve(__dirname, '../abis')
 
