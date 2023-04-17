@@ -1,5 +1,6 @@
 import { AbiCoder } from 'ethers'
 
+import { CacheType, initCache } from '../abi-cache/cache'
 import { patchBigint } from '../bigint/patch-bigint'
 import { bridge, bridgeSwap, feeBridge, stargateSwap, swap, swapBridge } from '../testdata/encoded'
 
@@ -15,7 +16,6 @@ const validateAndExtract = (results: CallDataInformation[]): CallDataInformation
     const [result] = results
 
     expect(result).toBeDefined()
-    expect(result.abiFileName).toBeDefined()
     expect(result.functionName).toBeDefined()
     expect(result.functionParameters).toBeDefined()
 
@@ -37,6 +37,8 @@ const validateAndExtractSwapData = (info: CallDataInformation): Array<SwapDataSt
 }
 
 describe('Acceptance tests', () => {
+    beforeAll(() => initCache(CacheType.MEMORY))
+
     beforeEach(() => patchBigint())
 
     it('should parse a swap transfer', () => {

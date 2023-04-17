@@ -9,8 +9,8 @@ export const parseStargate = (encodedCallData: string): Array<CallDataInformatio
     try {
         return [
             {
-                abiFileName: '',
-                functionName: '',
+                functionName: 'unnamed (stargate)',
+                rawCallData: encodedCallData,
                 functionParameters: AbiCoder.defaultAbiCoder().decode(STARGATE_PAYLOAD_ABI, hexify(encodedCallData))
             } as CallDataInformation
         ]
