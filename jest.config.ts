@@ -1,12 +1,6 @@
-// For a detailed explanation regarding each configuration property, visit:
-// https://jestjs.io/docs/en/configuration
-import type { Config } from '@jest/types'
+import type { Config } from 'jest'
 
-import packageJson from './package.json'
-
-process.env.NODE_ENV = 'test'
-
-const config: Config.InitialOptions = {
+const config: Config = {
     // All imported modules in your tests should be mocked automatically
     // automock: false,
 
@@ -118,7 +112,6 @@ const config: Config.InitialOptions = {
             'jest-junit',
             {
                 outputDirectory: 'build/test',
-                suiteName: packageJson.name,
                 suiteNameTemplate: '{filename}',
                 classNameTemplate: '{classname}',
                 titleTemplate: '{title}',
