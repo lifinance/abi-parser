@@ -189,10 +189,7 @@ describe('parseCallData', () => {
             parseCallData(
                 '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280'
             )
-        ).toThrow(
-            'invalid BytesLike value (argument="value",' +
-                ' value="0x000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280", code=INVALID_ARGUMENT, version=6.2.3)'
-        )
+        ).toThrow(/invalid BytesLike value/)
     })
 
     // eslint-disable-next-line jest/no-disabled-tests
