@@ -12,8 +12,8 @@ dependencies:
     specifier: ^16.3.1
     version: 16.3.1
   ethers:
-    specifier: ^6.6.5
-    version: 6.6.5
+    specifier: ^6.6.7
+    version: 6.6.7
   superagent:
     specifier: ^8.0.9
     version: 8.0.9
@@ -2090,8 +2090,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /ethers@6.6.5:
-    resolution: {integrity: sha512-Tc3HXzI0UJ9EhPp6E0fntkgMIA2//rhcB0UsmiRMCR+Bii5iu0RjtwJV55IhlLJ4K39pd0ku+eE4WRgqrLLW2Q==}
+  /ethers@6.6.7:
+    resolution: {integrity: sha512-1SdT3W5/IPAcx9l5/+9qKRYR/iqVIdNQIct18yeh+XvN+I4RK44mvOsAerMwJYCAwdQfsOgf3OkfozeuMInbtQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@adraffy/ens-normalize': 1.9.2
