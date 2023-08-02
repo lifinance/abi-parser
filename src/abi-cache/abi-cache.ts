@@ -1,8 +1,10 @@
 import { FunctionFragment, Interface, dataSlice, id } from 'ethers'
+import fs from 'fs'
+import path from 'path'
 
 import { Chain } from '../chains'
 
-export type AbiInformation = Interface
+export type AbiInformation = unknown[]
 export type FunctionInformation = {
     functionFragment: FunctionFragment
 }
@@ -10,10 +12,20 @@ type CachedFunctionFragmentsBySighash = { [sighash: string]: Array<FunctionInfor
 export type ContractLocation = { address: string; chain: Chain }
 
 export class AbiCache {
-    protected cachedAbis: Map<string, AbiInformation> = new Map()
+    protected cachedAbis: Map<string, Interface> = new Map()
     protected functionFragments: CachedFunctionFragmentsBySighash = {}
 
-    groupFunctionFragmentsBySighash = (): void => {
+    constructor() {
+        // DiamondABI
+        const fileName = '0x9b11bc9fac17c058cab6286b0c785be6a65492ef-1.json'
+
+        const filePath = path.join('./', fileName)
+
+        this.loadFromFile(filePath)
+    }
+
+    private groupFunctionFragmentsBySighash = (): void => {
+        this.functionFragments = {}
         for (const abi of this.cachedAbis.values()) {
             for (const functionFragment of abi.fragments.filter((f) => f.type === 'function')) {
                 const functionSighash = dataSlice(id(functionFragment.format('sighash')), 0, 4)
@@ -36,6 +48,20 @@ export class AbiCache {
 
     protected toKey(location: ContractLocation): string {
         return `${location.address}-${location.chain.valueOf()}`
+    }
+
+    protected loadFromFile(fileName: string): void {
+        try {
+            const fileContent = fs.readFileSync(fileName).toString()
+            const ethersInterface = new Interface(fileContent)
+
+            const location: ContractLocation = this.fromKey(path.basename(fileName, path.extname(fileName)))
+
+            this.cachedAbis.set(this.toKey(location), ethersInterface)
+            this.groupFunctionFragmentsBySighash()
+        } catch (error) {
+            console.error(`Error reading file ${fileName}: ${error}`)
+        }
     }
 
     protected fromKey(key: string): ContractLocation {
@@ -74,7 +100,7 @@ export class AbiCache {
 
         const cacheKey = this.toKey(location)
 
-        this.cachedAbis.set(cacheKey, abi)
+        this.cachedAbis.set(cacheKey, new Interface(JSON.stringify(abi)))
         this.persist(cacheKey, abi)
         this.groupFunctionFragmentsBySighash()
     }

@@ -1,8 +1,7 @@
 import path from 'path'
 import fs from 'fs'
-import { Interface } from 'ethers'
 
-import { AbiCache, AbiInformation, ContractLocation } from './abi-cache'
+import { AbiCache, AbiInformation } from './abi-cache'
 
 export class FileSystemAbiCache extends AbiCache {
     private abiDirectory: string
@@ -17,17 +16,7 @@ export class FileSystemAbiCache extends AbiCache {
             .forEach((fileName) => {
                 const filePath = path.join(this.abiDirectory, fileName)
 
-                try {
-                    const fileContent = fs.readFileSync(filePath).toString()
-                    const ethersInterface = new Interface(fileContent)
-
-                    const location: ContractLocation = this.fromKey(fileName.replace('.json', ''))
-
-                    this.cachedAbis.set(this.toKey(location), ethersInterface)
-                    this.groupFunctionFragmentsBySighash()
-                } catch (error) {
-                    console.error(`Error reading file ${filePath}: ${error}`)
-                }
+                this.loadFromFile(filePath)
             })
     }
 
