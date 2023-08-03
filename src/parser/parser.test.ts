@@ -1,195 +1,196 @@
-// import { FunctionFragment } from 'ethers'
+import { FunctionFragment } from 'ethers'
+
+import { cache, CacheType, initCache } from '../abi-cache/cache'
+import { patchBigint } from '../bigint/patch-bigint'
 
 import { parseCallData } from './calldata-parsers/parse-call-data'
 
-// const transferFunctionFragment = FunctionFragment.from('transfer(address _to, uint256 _value)')
-// const wrappedCallFunctionFragment: FunctionFragment = FunctionFragment.from('wrappedCall(address _to, bytes _calldata)')
+const transferFunctionFragment = FunctionFragment.from(
+  'transfer(address _to, uint256 _value)'
+)
+const wrappedCallFunctionFragment: FunctionFragment = FunctionFragment.from(
+  'wrappedCall(address _to, bytes _calldata)'
+)
 
 describe('parseCallData', () => {
+  beforeAll(() => {
+    initCache(CacheType.MEMORY)
+  })
+
+  beforeEach(() => patchBigint())
+
   afterEach(() => {
     // restore spies created with spyOn
     jest.restoreAllMocks()
   })
 
-  // it('parse simple call data', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation((sighash: any) => {
-  //         if (sighash === '0xa9059cbb') {
-  //             return [
-  //                 {
-  //                     fileName: 'abi-file-name-1',
-  //                     functionFragment: transferFunctionFragment
-  //                 }
-  //             ]
-  //         }
-  //
-  //         return []
-  //     })
-  //
-  //     // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     const candidates = parseCallData(
-  //         '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
-  //     )
-  //
-  //     expect(candidates).toHaveLength(1)
-  //     expect(candidates[0]).toStrictEqual({
-  //         abiFileName: 'abi-file-name-1',
-  //         functionName: 'transfer',
-  //         functionParameters: {
-  //             _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
-  //             _value: '4000000000'
-  //         }
-  //     })
-  // })
-  //
-  // it('parse call data with unsupported internal call data', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation((sighash: any) => {
-  //         if (sighash === '0xf7973310') {
-  //             return [
-  //                 {
-  //                     fileName: 'abi-file-name-1',
-  //                     functionFragment: wrappedCallFunctionFragment
-  //                 }
-  //             ]
-  //         }
-  //
-  //         return []
-  //     })
-  //
-  //     // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     const candidates = parseCallData(
-  //         '0xf7973310000000000000000000000000292f04a44506c2fd49bac032e1ca148c35a478c800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280000000000000000000000000000000000000000000000000000000000'
-  //     )
-  //
-  //     expect(candidates).toHaveLength(1)
-  //     expect(candidates[0]).toStrictEqual({
-  //         abiFileName: 'abi-file-name-1',
-  //         functionName: 'wrappedCall',
-  //         functionParameters: {
-  //             _calldata:
-  //                 '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800',
-  //             _to: '0x292f04a44506c2fd49Bac032E1ca148C35A478c8'
-  //         }
-  //     })
-  // })
-  //
-  // it('parse call data with supported internal call data', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation((sighash: any) => {
-  //         if (sighash === '0xa9059cbb') {
-  //             return [
-  //                 {
-  //                     fileName: 'abi-file-name-1',
-  //                     functionFragment: transferFunctionFragment
-  //                 }
-  //             ]
-  //         }
-  //
-  //         if (sighash === '0xf7973310') {
-  //             return [
-  //                 {
-  //                     fileName: 'abi-file-name-1',
-  //                     functionFragment: wrappedCallFunctionFragment
-  //                 }
-  //             ]
-  //         }
-  //
-  //         return []
-  //     })
-  //
-  //     // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     const candidates = parseCallData(
-  //         '0xf7973310000000000000000000000000292f04a44506c2fd49bac032e1ca148c35a478c800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280000000000000000000000000000000000000000000000000000000000'
-  //     )
-  //
-  //     expect(candidates).toHaveLength(1)
-  //     expect(candidates[0]).toStrictEqual({
-  //         abiFileName: 'abi-file-name-1',
-  //         functionName: 'wrappedCall',
-  //         functionParameters: {
-  //             _calldata: [
-  //                 {
-  //                     abiFileName: 'abi-file-name-1',
-  //                     functionName: 'transfer',
-  //                     functionParameters: {
-  //                         _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
-  //                         _value: '4000000000'
-  //                     }
-  //                 }
-  //             ],
-  //             _to: '0x292f04a44506c2fd49Bac032E1ca148C35A478c8'
-  //         }
-  //     })
-  // })
-  //
-  // it('return multiple results if multiple matching functions are found', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation((sighash: any) => {
-  //         if (sighash === '0xa9059cbb') {
-  //             return [
-  //                 {
-  //                     fileName: 'abi-file-name-1',
-  //                     functionFragment: transferFunctionFragment
-  //                 },
-  //                 {
-  //                     fileName: 'abi-file-name-2',
-  //                     functionFragment: transferFunctionFragment
-  //                 }
-  //             ]
-  //         }
-  //
-  //         return []
-  //     })
-  //
-  //     // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     const candidates = parseCallData(
-  //         '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
-  //     )
-  //
-  //     expect(candidates).toHaveLength(2)
-  //     expect(candidates[0]).toStrictEqual({
-  //         abiFileName: 'abi-file-name-1',
-  //         functionName: 'transfer',
-  //         functionParameters: {
-  //             _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
-  //             _value: '4000000000'
-  //         }
-  //     })
-  //     expect(candidates[1]).toStrictEqual({
-  //         abiFileName: 'abi-file-name-2',
-  //         functionName: 'transfer',
-  //         functionParameters: {
-  //             _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
-  //             _value: '4000000000'
-  //         }
-  //     })
-  // })
-  //
-  // it('return empty result if no matching function is found', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation(() => [])
-  //
-  //     // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     const candidates = parseCallData(
-  //         '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
-  //     )
-  //
-  //     expect(candidates).toHaveLength(0)
-  // })
-  //
-  // it('throw an error if given call data is malformed', () => {
-  //     jest.spyOn(abiLoader, 'getFunctionsBySighash').mockImplementation(() => [
-  //         {
-  //             fileName: 'abi-file-name-1',
-  //             functionFragment: transferFunctionFragment
-  //         }
-  //     ])
-  //
-  //     // eslint-disable-next-line max-len
-  //     // removed last nibble from: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
-  //     expect(() =>
-  //         parseCallData(
-  //             '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280'
-  //         )
-  //     ).toThrow(/invalid BytesLike value/)
-  // })
+  it('parse simple call data', () => {
+    jest.spyOn(cache, 'get').mockImplementation((sighash: string) => {
+      if (sighash === '0xa9059cbb') {
+        return [
+          {
+            functionFragment: transferFunctionFragment,
+          },
+        ]
+      }
 
+      return []
+    })
+
+    // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    const candidates = parseCallData(
+      '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
+    )
+
+    expect(candidates).toHaveLength(1)
+    expect(candidates[0]).toStrictEqual({
+      functionName: 'transfer',
+      functionParameters: {
+        _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
+        _value: '4000000000',
+      },
+    })
+  })
+
+  it('parse call data with unsupported internal call data', () => {
+    jest.spyOn(cache, 'get').mockImplementation((sighash: string) => {
+      if (sighash === '0xf7973310') {
+        return [
+          {
+            functionFragment: wrappedCallFunctionFragment,
+          },
+        ]
+      }
+
+      return []
+    })
+
+    // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    const candidates = parseCallData(
+      '0xf7973310000000000000000000000000292f04a44506c2fd49bac032e1ca148c35a478c800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280000000000000000000000000000000000000000000000000000000000'
+    )
+
+    expect(candidates).toHaveLength(1)
+    expect(candidates[0]).toStrictEqual({
+      functionName: 'wrappedCall',
+      functionParameters: {
+        _calldata:
+          '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800',
+        _to: '0x292f04a44506c2fd49Bac032E1ca148C35A478c8',
+      },
+    })
+  })
+
+  it('parse call data with supported internal call data', () => {
+    jest.spyOn(cache, 'get').mockImplementation((sighash: string) => {
+      if (sighash === '0xa9059cbb') {
+        return [
+          {
+            functionFragment: transferFunctionFragment,
+          },
+        ]
+      }
+
+      if (sighash === '0xf7973310') {
+        return [
+          {
+            functionFragment: wrappedCallFunctionFragment,
+          },
+        ]
+      }
+
+      return []
+    })
+
+    // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    const candidates = parseCallData(
+      '0xf7973310000000000000000000000000292f04a44506c2fd49bac032e1ca148c35a478c800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280000000000000000000000000000000000000000000000000000000000'
+    )
+
+    expect(candidates).toHaveLength(1)
+    expect(candidates[0]).toStrictEqual({
+      functionName: 'wrappedCall',
+      functionParameters: {
+        _calldata: [
+          {
+            functionName: 'transfer',
+            functionParameters: {
+              _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
+              _value: '4000000000',
+            },
+          },
+        ],
+        _to: '0x292f04a44506c2fd49Bac032E1ca148C35A478c8',
+      },
+    })
+  })
+
+  it('return multiple results if multiple matching functions are found', () => {
+    jest.spyOn(cache, 'get').mockImplementation((sighash: string) => {
+      if (sighash === '0xa9059cbb') {
+        return [
+          {
+            functionFragment: transferFunctionFragment,
+          },
+          {
+            functionFragment: transferFunctionFragment,
+          },
+        ]
+      }
+
+      return []
+    })
+
+    // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    const candidates = parseCallData(
+      '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
+    )
+
+    expect(candidates).toHaveLength(2)
+    expect(candidates[0]).toStrictEqual({
+      functionName: 'transfer',
+      functionParameters: {
+        _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
+        _value: '4000000000',
+      },
+    })
+    expect(candidates[1]).toStrictEqual({
+      functionName: 'transfer',
+      functionParameters: {
+        _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
+        _value: '4000000000',
+      },
+    })
+  })
+
+  it('return empty result if no matching function is found', () => {
+    jest.spyOn(cache, 'get').mockImplementation(() => [])
+
+    // source: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    const candidates = parseCallData(
+      '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b2800'
+    )
+
+    expect(candidates).toHaveLength(0)
+  })
+
+  it('throw an error if given call data is malformed', () => {
+    jest.spyOn(cache, 'get').mockImplementation(() => [
+      {
+        functionFragment: transferFunctionFragment,
+      },
+    ])
+
+    // eslint-disable-next-line max-len
+    // removed last nibble from: https://etherscan.io/tx/0xf0d9ceded478eda9a8e15b8017a5f2b78e41f0eb657c4732462c2461261a2f86
+    expect(() =>
+      parseCallData(
+        '0xa9059cbb000000000000000000000000633f00e2b2d5742fa69c10cabb3ffc6e2ec29f1e00000000000000000000000000000000000000000000000000000000ee6b280'
+      )
+    ).toThrow(/invalid BytesLike value/)
+  })
+
+  //
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('parse real world call data 1: unsupported internal call data', () => {
     // source: https://arbiscan.io/tx/0xc066f7e83d283a63d9a3662723ae8d27a4ef757ae95c03d9040d45474f50abd5

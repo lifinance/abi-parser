@@ -115,7 +115,7 @@ export class AbiCache {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars,no-empty-function
   protected persist(_key: string, _abi: AbiInformation): void {}
 
   public set = (location: ContractLocation, abi: AbiInformation): void => {
