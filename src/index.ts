@@ -79,7 +79,11 @@ const run = async () => {
     )
 
     for (const candidate of parsed) {
-        console.log(JSON.stringify(candidate, undefined, 4))
+        try {
+            console.log(JSON.stringify(candidate, undefined, 4))
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
 
