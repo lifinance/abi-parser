@@ -27,8 +27,8 @@ export type StargateDataStruct = {
 }
 
 export type CallDataInformation = {
-    abiFileName: string
     functionName: string
+    rawCallData?: string
     functionParameters: ParameterMap
 }
 export type ParameterValue = Result[keyof Result] | CallDataInformation | BigInteger | string

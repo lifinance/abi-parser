@@ -1,7 +1,7 @@
-import { Chain } from './chain'
+import { ChainId } from '@lifi/types'
 
 export interface ChainConfig {
-    chain: Chain
+    chain: ChainId
     apiHost: string
     apiKey?: string
 }

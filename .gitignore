@@ -1,6 +1,7 @@
-.idea/
-.vscode/
-build/
-node_modules
 .env
 .eslintcache
+.idea/
+.vscode/
+abi-cache/
+build/
+node_modules

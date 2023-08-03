@@ -54,8 +54,8 @@
     },
 
     // File Inclusions
-    "include": ["src/**/*", "src/**/*.json"],
-    "exclude": ["**/*.test.ts"],
+    "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js"],
+    "exclude": [],
 
     // Local developer settings
     "ts-node": {

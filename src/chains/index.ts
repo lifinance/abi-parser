@@ -1,4 +1,3 @@
-export * from './chain'
 export * from './chain-config'
 export * from './create-chain'
 export * from './get-abi'
