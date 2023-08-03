@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -26,16 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .npmrc file to publish to npm
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install modules
-        run: npm install
+
+      - uses: ./.github/actions/install
+
       - name: Build
-        run: npm run build
+        run: pnpm run build
+
       - name: Publish to npm
-        run: npm publish --access public
+        run: pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
