@@ -42,7 +42,7 @@ export const getAbi = async (
     .query(chainConfig.apiKey ? `apiKey=${chainConfig.apiKey}` : {})
 
   if (res.body.message.startsWith('OK')) {
-    console.log(`loaded abi for ${address}`)
+    // console.log(`loaded abi for ${address}`)
 
     return res.body.result as string
   }

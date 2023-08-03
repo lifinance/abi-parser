@@ -150,10 +150,10 @@ const config: Config = {
     // setupFilesAfterEnv: ['jest-extended/all'],
 
     // The number of seconds after which a test is considered as slow and reported as such in the results.
-    slowTestThreshold: 5,
+    slowTestThreshold: 10,
 
     // The number of milliseconds after which a test times out and fails
-    // testTimeout: 6000000,
+    testTimeout: 6000000,
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
     // snapshotSerializers: [],
