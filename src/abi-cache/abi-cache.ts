@@ -75,6 +75,9 @@ export class AbiCache {
     }
 
     protected fromKey(key: string): ContractLocation {
+        // Address and ChainId information is encoded in the file name
+        // e.g. 0x9b11bc9fac17c058cab6286b0c785be6a65492ef-1.json
+        // RegEx need to match to be able to decode the information
         const regex = /^(0x[a-fA-F0-9]+)-(\d+)$/
         const match = key.match(regex)
 

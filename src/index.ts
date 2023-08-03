@@ -15,10 +15,10 @@ dotenv.config()
 
 initCache(CacheType.FILE_SYSTEM)
 
-export const cacheAbi = (address: string): Promise<void[]> => {
+export const cacheAbi = async (address: string): Promise<void> => {
     const chains = initChains()
 
-    return Promise.all(
+    await Promise.all(
         chains.map(async (chainConfig) => {
             const { chain } = chainConfig
             const location = { address, chain } as ContractLocation
@@ -41,11 +41,18 @@ export const cacheAbi = (address: string): Promise<void[]> => {
  * After calling `parseCallData`, `cacheCandidates` is called to cache all ABIs followed by
  * `parseCallData` again to parse the call data with the cached ABIs.
  */
-const cacheCandidates = (c: CallDataInformation) =>
+const cacheCandidates = async (c: CallDataInformation) => {
     // eslint-disable-next-line no-underscore-dangle
-    [...(c.functionParameters._swapData || []), c.functionParameters._amarokData, c.functionParameters._stargateData]
-        .filter((d) => d !== undefined && d.callTo !== undefined)
-        .map((d) => cacheAbi(d?.callTo as string))
+    await Promise.all(
+        [
+            ...(c.functionParameters._swapData || []),
+            c.functionParameters._amarokData,
+            c.functionParameters._stargateData
+        ]
+            .filter((d) => d !== undefined && d.callTo !== undefined)
+            .map((d) => cacheAbi(d?.callTo as string))
+    )
+}
 
 const run = async () => {
     const callDataStrings =
@@ -64,7 +71,7 @@ const run = async () => {
 
                 console.log(parsedCandidates.length > 0 ? green(resultString) : yellow(resultString))
 
-                await Promise.all(parsedCandidates.map(cacheCandidates).flat())
+                await Promise.all(parsedCandidates.map(cacheCandidates))
 
                 return parseCallData(callDataString)
             })
