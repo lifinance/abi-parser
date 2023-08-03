@@ -37,8 +37,10 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Publish to npm
+        # https://github.com/pnpm/pnpm/issues/5894
+        # https://github.com/apimda/npm-layer-version/pull/2
         run: |
-          pnpm publish --access public \
+          pnpm publish --access public --no-git-checks \
           ${{ contains(github.ref_name, 'alpha') && '--tag alpha' || contains(github.ref_name, 'beta') && '--tag beta' || '' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
