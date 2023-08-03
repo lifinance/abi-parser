@@ -1,27 +1,22 @@
-import { FunctionFragment, Interface, dataSlice, id } from 'ethers'
+import { ChainId } from '@lifi/types'
+import { dataSlice, FunctionFragment, id, Interface } from 'ethers'
 import fs from 'fs'
 import path from 'path'
-
-import { Chain } from '../chains'
 
 export type AbiInformation = unknown[]
 export type FunctionInformation = {
     functionFragment: FunctionFragment
 }
 type CachedFunctionFragmentsBySighash = { [sighash: string]: Array<FunctionInformation> }
-export type ContractLocation = { address: string; chain: Chain }
+export type ContractLocation = { address: string; chain: ChainId }
 
 export class AbiCache {
     protected cachedAbis: Map<string, Interface> = new Map()
     protected functionFragments: CachedFunctionFragmentsBySighash = {}
 
     constructor() {
-        // DiamondABI
-        const fileName = '0x9b11bc9fac17c058cab6286b0c785be6a65492ef-1.json'
-
-        const filePath = path.join('./', fileName)
-
-        this.loadFromFile(filePath)
+        // Load shipped ABIs
+        this.loadAbiDirectory(path.join(__dirname, '../../abis'))
     }
 
     private groupFunctionFragmentsBySighash = (): void => {
@@ -48,6 +43,21 @@ export class AbiCache {
 
     protected toKey(location: ContractLocation): string {
         return `${location.address}-${location.chain.valueOf()}`
+    }
+
+    protected loadAbiDirectory(abiDirectory: string): void {
+        if (!fs.existsSync(abiDirectory)) {
+            fs.mkdirSync(abiDirectory)
+        }
+        const filesPaths = fs.readdirSync(abiDirectory)
+
+        filesPaths
+            .filter((fileName) => path.extname(fileName) === '.json')
+            .forEach((fileName) => {
+                const filePath = path.join(abiDirectory, fileName)
+
+                this.loadFromFile(filePath)
+            })
     }
 
     protected loadFromFile(fileName: string): void {
@@ -80,24 +90,22 @@ export class AbiCache {
             throw new Error('Invalid number in input string')
         }
 
-        if (!(chainId in Chain)) {
+        if (!(chainId in ChainId)) {
             throw new Error(`Invalid enum value in input string: ${chainString}`)
         }
 
-        const chain = Chain[Chain[chainId] as keyof typeof Chain]
+        const chain = ChainId[ChainId[chainId] as keyof typeof ChainId]
 
         return {
             address,
             chain
-        } as ContractLocation
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
     protected persist(_key: string, _abi: AbiInformation): void {}
 
     public set = (location: ContractLocation, abi: AbiInformation): void => {
-        // const ethersInterface = new Interface(abi)
-
         const cacheKey = this.toKey(location)
 
         this.cachedAbis.set(cacheKey, new Interface(JSON.stringify(abi)))

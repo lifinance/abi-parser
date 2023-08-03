@@ -1,19 +1,19 @@
 import { green, red, yellow } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
+import { ContractLocation } from './abi-cache/abi-cache'
+import { cache, CacheType, initCache } from './abi-cache/cache'
 import { patchBigint } from './bigint/patch-bigint'
 import { getAbi, initChains } from './chains'
 import { CallDataInformation } from './parser'
 import { parseCallData } from './parser/calldata-parsers/parse-call-data'
 import { bridge, bridgeSwap, feeBridge, stargateSwap, swap, swapBridge } from './testdata/encoded'
-import { ContractLocation } from './abi-cache/abi-cache'
-import { cache, initCache } from './abi-cache/cache'
 
 patchBigint()
 
 dotenv.config()
 
-initCache()
+initCache(CacheType.FILE_SYSTEM)
 
 export const cacheAbi = (address: string): Promise<void[]> => {
     const chains = initChains()
@@ -36,6 +36,11 @@ export const cacheAbi = (address: string): Promise<void[]> => {
     )
 }
 
+/*
+ * This function extracts all addresses from the call data and caches their ABIs.
+ * After calling `parseCallData`, `cacheCandidates` is called to cache all ABIs followed by
+ * `parseCallData` again to parse the call data with the cached ABIs.
+ */
 const cacheCandidates = (c: CallDataInformation) =>
     // eslint-disable-next-line no-underscore-dangle
     [...(c.functionParameters._swapData || []), c.functionParameters._amarokData, c.functionParameters._stargateData]

@@ -1,5 +1,5 @@
-import path from 'path'
 import fs from 'fs'
+import path from 'path'
 
 import { AbiCache, AbiInformation } from './abi-cache'
 
@@ -8,16 +8,8 @@ export class FileSystemAbiCache extends AbiCache {
 
     constructor(abiDirectory: string) {
         super()
-        this.abiDirectory = abiDirectory
-        const filesPaths = fs.readdirSync(this.abiDirectory)
-
-        filesPaths
-            .filter((fileName) => path.extname(fileName) === '.json')
-            .forEach((fileName) => {
-                const filePath = path.join(this.abiDirectory, fileName)
-
-                this.loadFromFile(filePath)
-            })
+        this.abiDirectory = abiDirectory || '/tmp/abi-parser'
+        this.loadAbiDirectory(this.abiDirectory)
     }
 
     protected override persist(key: string, abi: AbiInformation): void {

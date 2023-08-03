@@ -1,6 +1,6 @@
 import { AbiCoder } from 'ethers'
 
-import { initCache } from '../abi-cache/cache'
+import { CacheType, initCache } from '../abi-cache/cache'
 import { patchBigint } from '../bigint/patch-bigint'
 import { bridge, bridgeSwap, feeBridge, stargateSwap, swap, swapBridge } from '../testdata/encoded'
 
@@ -37,7 +37,7 @@ const validateAndExtractSwapData = (info: CallDataInformation): Array<SwapDataSt
 }
 
 describe('Acceptance tests', () => {
-    beforeAll(() => initCache())
+    beforeAll(() => initCache(CacheType.MEMORY))
 
     beforeEach(() => patchBigint())
 

@@ -1,10 +1,10 @@
 import { FunctionFragment } from 'ethers'
 
-import { cache, initCache } from './cache'
+import { cache, CacheType, initCache } from './cache'
 
 describe('abi-loader', () => {
     beforeAll(() => {
-        initCache()
+        initCache(CacheType.MEMORY)
     })
 
     it('load ABIs from the "abis" directory of the file system', () => {
