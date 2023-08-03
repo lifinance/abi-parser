@@ -1,0 +1,25 @@
+name: Test Coverage Report
+on:
+  - pull_request
+jobs:
+  coverage-report:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/install
+      - uses: jwalton/gh-find-current-pr@v1
+        id: prId
+      # This action looks like the most promising one out of what I have seen so far fot his use case. It still lacks
+      # some features we want, but they seem on the roadmap already. So for now, bulbs are red and we only use it for
+      # unit tests because we need the sharding feature for the integration tests.
+      # Worth a read: https://github.com/ArtiomTr/jest-coverage-report-action/issues/360#issuecomment-1509952264
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          skip-step: install
+          package-manager: pnpm
+          test-script: pnpm run test
+          prnumber: ${{ steps.prId.outputs.number }}

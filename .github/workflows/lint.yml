@@ -1,0 +1,22 @@
+name: Lint
+
+on:
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/install
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          continue_on_error: false
+          eslint: true
+          eslint_extensions: ts

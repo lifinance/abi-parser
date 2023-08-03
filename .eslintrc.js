@@ -74,6 +74,7 @@ module.exports = {
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
+        'plugin:prettier/recommended',
         'plugin:promise/recommended',
         'prettier'
     ],
@@ -190,11 +191,6 @@ module.exports = {
         'import/order': [
             'error',
             {
-                'pathGroups': ['.', '..', '../..', '../../..', '../../../..'].map((p) => ({
-                    pattern: `${p}/sentry`,
-                    group: 'internal',
-                    position: 'before'
-                })),
                 'groups': [
                     ['builtin', 'external'],
                     ['internal', 'parent', 'type'],
