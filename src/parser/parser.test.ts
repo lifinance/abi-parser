@@ -1,7 +1,6 @@
 import { FunctionFragment } from 'ethers'
 
 import { cache, CacheType, initCache } from '../abi-cache/cache'
-import { patchBigint } from '../bigint/patch-bigint'
 
 import { parseCallData } from './calldata-parsers/parse-call-data'
 
@@ -16,8 +15,6 @@ describe('parseCallData', () => {
   beforeAll(() => {
     initCache(CacheType.MEMORY)
   })
-
-  beforeEach(() => patchBigint())
 
   afterEach(() => {
     // restore spies created with spyOn
