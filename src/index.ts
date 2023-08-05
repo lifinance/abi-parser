@@ -5,6 +5,7 @@ import { CallDataInformation } from './parser'
 import { parseCallData } from './parser/calldata-parsers/parse-call-data'
 
 export { CacheType } from './abi-cache/cache'
+export { CallDataInformation } from './parser'
 export const parseCallDataString = async (
   callDataString: string,
   cache: AbiCache = initCache(CacheType.MEMORY)
