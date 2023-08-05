@@ -275,7 +275,7 @@ module.exports = {
             }
         },
         {
-            files: ['src/index.ts', 'src/jobs/*/index.ts'],
+            files: ['src/cli.ts'],
             rules: {
                 'promise/prefer-await-to-callbacks': 'off'
             }

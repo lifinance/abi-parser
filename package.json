@@ -1,6 +1,6 @@
 {
   "name": "@lifi/abi-parser",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "publishConfig": {
     "access": "public"
   },
@@ -12,12 +12,17 @@
     "url": "git+ssh://git@github.com/lifinance/abi-parser.git"
   },
   "bugs": {
-    "url": "https://github.com/lifinance/abi-parser"
+    "url": "https://github.com/lifinance/abi-parser/issues"
   },
+  "bin": {
+    "abi-parser": "build/app"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf build",
-    "parse-call-data": "ts-node --transpile-only src/index.ts",
+    "parse-call-data": "ts-node --transpile-only src/cli.ts",
     "lint": "eslint --ext .ts --ext .js .",
     "test": "jest"
   },

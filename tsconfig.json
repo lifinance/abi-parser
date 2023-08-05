@@ -1,68 +1,63 @@
 {
-    "compileOnSave": true,
+  "compileOnSave": true,
+  "compilerOptions": {
+    // Project Options
+    "target": "ESNext",
+    "module": "commonjs",
+    "lib": [
+      "dom",
+      "es5",
+      "es6",
+      "es7",
+      "es2017",
+      "es2018",
+      "es2019",
+      "es2020",
+      "es2021"
+    ],
+    "outDir": "./build/app",
+    "declaration": true,
+    "sourceMap": true,
+    // Type Checking
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    // Modules
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    // Experimental Options
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    // JS
+    "allowJs": false,
+    "checkJs": false
+  },
+  // File Inclusions
+  "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js"],
+  "exclude": [],
+  // Local developer settings
+  "ts-node": {
     "compilerOptions": {
-        // Project Options
-        "target": "ESNext",
-        "module": "commonjs",
-        "lib": [
-            "dom",
-            "es5",
-            "es6",
-            "es7",
-            "es2017",
-            "es2018",
-            "es2019",
-            "es2020",
-            "es2021",
-        ],
-        "outDir": "./build/app",
-        "sourceMap": true,
-
-        // Type Checking
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "alwaysStrict": true,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": true,
-        "noImplicitOverride": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "strictPropertyInitialization": false,
-
-        // Modules
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "isolatedModules": false,
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-
-        // Experimental Options
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-
-        // JS
-        "allowJs": false,
-        "checkJs": false
-    },
-
-    // File Inclusions
-    "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js"],
-    "exclude": [],
-
-    // Local developer settings
-    "ts-node": {
-        "compilerOptions": {
-            "allowUnusedLabels": true,
-            "noUnusedLocals": false,
-            "noUnusedParameters": false
-        }
+      "allowUnusedLabels": true,
+      "noUnusedLocals": false,
+      "noUnusedParameters": false
     }
+  }
 }
