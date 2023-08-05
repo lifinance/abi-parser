@@ -15,10 +15,10 @@
     "url": "https://github.com/lifinance/abi-parser/issues"
   },
   "bin": {
-    "abi-parser": "build/app/cli.js"
+    "abi-parser": "dist/cli.js"
   },
-  "main": "build/app/index.js",
-  "typings": "build/app/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf build",
@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "files": [
-    "build/app",
+    "dist",
     "abis"
   ],
   "devDependencies": {

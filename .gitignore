@@ -3,5 +3,5 @@
 .idea/
 .vscode/
 ./abi-cache/
-build/
+dist/
 node_modules

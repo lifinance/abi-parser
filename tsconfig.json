@@ -15,7 +15,7 @@
       "es2020",
       "es2021"
     ],
-    "outDir": "./build/app",
+    "outDir": "./dist",
     "declaration": true,
     "sourceMap": true,
     // Type Checking
@@ -50,7 +50,7 @@
     "checkJs": false
   },
   // File Inclusions
-  "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js"],
+  "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js", "./abis/**/*"],
   "exclude": [],
   // Local developer settings
   "ts-node": {

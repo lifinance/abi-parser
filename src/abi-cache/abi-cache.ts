@@ -20,6 +20,7 @@ export class AbiCache {
 
   constructor() {
     // Load shipped ABIs
+    console.log(__dirname)
     this.loadAbiDirectory(path.join(__dirname, '../../abis'))
   }
 

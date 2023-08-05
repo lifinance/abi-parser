@@ -9,7 +9,7 @@ const config: Config = {
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  collectCoverage: false,
+  collectCoverage: true,
   coverageThreshold: {
     global: {
       branches: 19,
