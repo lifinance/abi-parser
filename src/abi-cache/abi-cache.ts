@@ -3,6 +3,8 @@ import { dataSlice, FunctionFragment, id, Interface } from 'ethers'
 import fs from 'fs'
 import path from 'path'
 
+import { stringify } from '../lib/stringify'
+
 export type AbiInformation = unknown[]
 export type FunctionInformation = {
   functionFragment: FunctionFragment
@@ -121,7 +123,7 @@ export class AbiCache {
   public set = (location: ContractLocation, abi: AbiInformation): void => {
     const cacheKey = this.toKey(location)
 
-    this.cachedAbis.set(cacheKey, new Interface(JSON.stringify(abi)))
+    this.cachedAbis.set(cacheKey, new Interface(stringify(abi)))
     this.persist(cacheKey, abi)
     this.groupFunctionFragmentsBySighash()
   }

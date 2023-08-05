@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import { stringify } from '../lib/stringify'
+
 import { AbiCache, AbiInformation } from './abi-cache'
 
 export class FileSystemAbiCache extends AbiCache {
@@ -15,9 +17,6 @@ export class FileSystemAbiCache extends AbiCache {
   protected override persist(key: string, abi: AbiInformation): void {
     const fileName = `${key}.json`
 
-    fs.writeFileSync(
-      path.resolve(this.abiDirectory, fileName),
-      JSON.stringify(abi, undefined, 4)
-    )
+    fs.writeFileSync(path.resolve(this.abiDirectory, fileName), stringify(abi))
   }
 }

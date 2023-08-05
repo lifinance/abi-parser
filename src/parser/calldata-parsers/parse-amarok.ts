@@ -1,5 +1,6 @@
 import { AbiCoder } from 'ethers'
 
+import { stringify } from '../../lib/stringify'
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
 

@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv'
 
 import { CacheType, initCache } from './abi-cache/cache'
 import { cacheCandidates } from './abi-cache/cache-candidates'
-import { patchBigint } from './bigint/patch-bigint'
+import { stringify } from './lib/stringify'
 import { CallDataInformation } from './parser'
 import { parseCallData } from './parser/calldata-parsers/parse-call-data'
 import {
@@ -14,8 +14,6 @@ import {
   swap,
   swapBridge,
 } from './testdata/encoded'
-
-patchBigint()
 
 dotenv.config()
 
@@ -50,7 +48,7 @@ const run = async () => {
 
   for (const candidate of parsed) {
     try {
-      console.log(JSON.stringify(candidate, undefined, 4))
+      console.log(stringify(candidate))
     } catch (e) {
       console.log(e)
     }

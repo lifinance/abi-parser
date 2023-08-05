@@ -1,7 +1,6 @@
 import { AbiCoder } from 'ethers'
 
 import { CacheType, initCache } from '../abi-cache/cache'
-import { patchBigint } from '../bigint/patch-bigint'
 import {
   bridge,
   bridgeSwap,
@@ -56,8 +55,6 @@ describe('Acceptance tests', () => {
   beforeAll(() => {
     initCache(CacheType.MEMORY)
   })
-
-  beforeEach(() => patchBigint())
 
   it('should parse a swap transfer', () => {
     const results = parseCallData(swap)

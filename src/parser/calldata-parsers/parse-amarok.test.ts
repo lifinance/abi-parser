@@ -1,7 +1,6 @@
 import { AbiCoder } from 'ethers'
 
 import { CacheType, initCache } from '../../abi-cache/cache'
-import { patchBigint } from '../../bigint/patch-bigint'
 
 import { AMAROK_PAYLOAD_ABI } from './abis/amarok'
 
@@ -9,8 +8,6 @@ describe('Amarok tests', () => {
   beforeAll(() => {
     initCache(CacheType.MEMORY)
   })
-
-  beforeEach(() => patchBigint())
 
   it('should parse amarok payload', () => {
     const rawCallData =
