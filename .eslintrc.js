@@ -79,7 +79,7 @@ module.exports = {
         'prettier'
     ],
     rules: {
-        'no-underscore-dangle': ['warn', { enforceInClassFields: false, allowAfterThis: true }],
+        'no-underscore-dangle': ['warn', { allow: ['_swapData', '_amarokData', '_stargateData' ], enforceInClassFields: false, allowAfterThis: true }],
         // http://eslint.org/docs/rules/
         'array-element-newline': 'off',
         'callback-return': ['error', ['callback', 'cb', 'done']],
