@@ -8,7 +8,7 @@ export enum CacheType {
   REDIS = 3,
 }
 
-export let cache: AbiCache
+let cache: AbiCache
 
 export const initCache = (cacheType: CacheType): AbiCache => {
   if (!cache) {

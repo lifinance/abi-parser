@@ -1,8 +1,8 @@
 import { red } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
-import { CacheType, initCache } from './abi-cache/cache'
 import { parseCallDataString } from '.'
+import { initCache, CacheType } from './abi-cache/cache'
 import { stringify } from './lib/stringify'
 import {
   bridge,
@@ -15,9 +15,9 @@ import {
 
 dotenv.config()
 
-initCache(CacheType.FILE_SYSTEM)
-
 const run = async () => {
+  const cache = initCache(CacheType.FILE_SYSTEM)
+
   const callDataStrings =
     process.argv.length === 2
       ? [swap, bridge, stargateSwap, bridgeSwap, swapBridge, feeBridge]
@@ -25,7 +25,7 @@ const run = async () => {
 
   const parsed = await Promise.all(
     callDataStrings
-      .map((callDataString) => parseCallDataString(callDataString))
+      .map((callDataString) => parseCallDataString(callDataString, cache))
       .flat()
   )
 

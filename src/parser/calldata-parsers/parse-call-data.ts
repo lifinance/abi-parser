@@ -1,12 +1,13 @@
 import { AbiCoder } from 'ethers'
 
+import { AbiCache } from '../../abi-cache/abi-cache'
 import { buildParameterMap } from '../build-parameter-map'
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
-import { cache } from '../../abi-cache/cache'
 
 export const parseCallData = (
-  encodedCallData: string
+  encodedCallData: string,
+  cache: AbiCache
 ): CallDataInformation[] => {
   const hexCallData = hexify(encodedCallData)
   const callSighash = hexCallData.substring(0, 10)
@@ -21,7 +22,8 @@ export const parseCallData = (
     )
     const functionParameters = buildParameterMap(
       functionFragment.inputs,
-      decodedFunctionData
+      decodedFunctionData,
+      cache
     )
 
     return {

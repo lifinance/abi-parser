@@ -1,5 +1,6 @@
 import { CallDataInformation } from '../parser'
 
+import { AbiCache } from './abi-cache'
 import { cacheAbi } from './cache-abi'
 
 /*
@@ -8,6 +9,7 @@ import { cacheAbi } from './cache-abi'
  * `parseCallData` again to parse the call data with the cached ABIs.
  */
 export const cacheCandidates = async (
+  cache: AbiCache,
   c: CallDataInformation
 ): Promise<void> => {
   await Promise.all(
@@ -20,6 +22,6 @@ export const cacheCandidates = async (
       c.functionParameters._stargateData,
     ]
       .filter((d) => d !== undefined && d.callTo !== undefined)
-      .map((d) => cacheAbi(d?.callTo as string))
+      .map((d) => cacheAbi(cache, d?.callTo as string))
   )
 }

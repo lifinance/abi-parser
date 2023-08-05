@@ -1,5 +1,6 @@
 import { AbiCoder } from 'ethers'
 
+import { AbiCache } from '../abi-cache/abi-cache'
 import { CacheType, initCache } from '../abi-cache/cache'
 import {
   bridge,
@@ -51,13 +52,15 @@ const validateAndExtractSwapData = (
   return info.functionParameters._swapData as Array<SwapDataStruct>
 }
 
+let cache: AbiCache
+
 describe('Acceptance tests', () => {
   beforeAll(() => {
-    initCache(CacheType.MEMORY)
+    cache = initCache(CacheType.MEMORY)
   })
 
   it('should parse a swap transfer', () => {
-    const results = parseCallData(swap)
+    const results = parseCallData(swap, cache)
     const result = validateAndExtract(results)
     const swapData = validateAndExtractSwapData(result)
     const swapDataCalls = swapData.map((s) => s.callData).flat()
@@ -67,7 +70,7 @@ describe('Acceptance tests', () => {
   })
 
   it('should parse a bridge transfer', () => {
-    const results = parseCallData(bridge)
+    const results = parseCallData(bridge, cache)
 
     const information = validateAndExtract(results)
 
@@ -75,7 +78,7 @@ describe('Acceptance tests', () => {
   })
 
   it('should parse a swap + bridge transfer', () => {
-    const results = parseCallData(swapBridge)
+    const results = parseCallData(swapBridge, cache)
     const result = validateAndExtract(results)
     const swapData = validateAndExtractSwapData(result)
     const swapDataCalls = swapData.map((s) => s.callData).flat()
@@ -86,7 +89,7 @@ describe('Acceptance tests', () => {
 
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should parse a swap(fee-collection) + bridge transfer', () => {
-    const results = parseCallData(feeBridge)
+    const results = parseCallData(feeBridge, cache)
     const result = validateAndExtract(results)
     const swapData = validateAndExtractSwapData(result)
     const swapDataCalls = swapData.map((s) => s.callData).flat()
@@ -97,7 +100,7 @@ describe('Acceptance tests', () => {
 
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('bridge + swap transfer', () => {
-    const results = parseCallData(bridgeSwap)
+    const results = parseCallData(bridgeSwap, cache)
     const result = validateAndExtract(results)
 
     const amarokData = result.functionParameters._amarokData as AmarokDataStruct
@@ -119,7 +122,7 @@ describe('Acceptance tests', () => {
   })
 
   it('swap + stargate + swap transfer', () => {
-    const results = parseCallData(stargateSwap)
+    const results = parseCallData(stargateSwap, cache)
     const result = validateAndExtract(results)
     const stargateData = result.functionParameters
       ._stargateData as StargateDataStruct
@@ -141,7 +144,7 @@ describe('Acceptance tests', () => {
   })
 
   it('swap + amarok + swap transfer', () => {
-    const results = parseCallData(swapAmarokSwap)
+    const results = parseCallData(swapAmarokSwap, cache)
     const result = validateAndExtract(results)
     const amarokData = result.functionParameters._amarokData as AmarokDataStruct
 

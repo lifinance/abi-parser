@@ -1,4 +1,5 @@
-import { CacheType, initCache } from './abi-cache/cache'
+import { AbiCache } from './abi-cache/abi-cache'
+import { initCache, CacheType } from './abi-cache/cache'
 import { cacheCandidates } from './abi-cache/cache-candidates'
 import { CallDataInformation } from './parser'
 import { parseCallData } from './parser/calldata-parsers/parse-call-data'
@@ -6,12 +7,16 @@ import { parseCallData } from './parser/calldata-parsers/parse-call-data'
 export { CacheType } from './abi-cache/cache'
 export const parseCallDataString = async (
   callDataString: string,
-  cacheType: CacheType = CacheType.MEMORY
+  cache: AbiCache = initCache(CacheType.MEMORY)
 ): Promise<CallDataInformation[]> => {
-  initCache(cacheType)
-  const parsedCandidates: CallDataInformation[] = parseCallData(callDataString)
+  const parsedCandidates: CallDataInformation[] = parseCallData(
+    callDataString,
+    cache
+  )
 
-  await Promise.all(parsedCandidates.map(cacheCandidates))
+  await Promise.all(
+    parsedCandidates.map((candidate) => cacheCandidates(cache, candidate))
+  )
 
-  return parseCallData(callDataString)
+  return parseCallData(callDataString, cache)
 }

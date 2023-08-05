@@ -1,9 +1,11 @@
 import { getAbi, initChains } from '../chains'
 
-import { ContractLocation } from './abi-cache'
-import { cache } from './cache'
+import { AbiCache, ContractLocation } from './abi-cache'
 
-export const cacheAbi = async (address: string): Promise<void> => {
+export const cacheAbi = async (
+  cache: AbiCache,
+  address: string
+): Promise<void> => {
   const chains = initChains()
 
   await Promise.all(
