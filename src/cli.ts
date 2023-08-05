@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { red } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
