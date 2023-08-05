@@ -1,6 +1,5 @@
 import { AbiCoder } from 'ethers'
 
-import { stringify } from '../../lib/stringify'
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
 
@@ -24,6 +23,15 @@ export const parseAmarok = (
         console.log('never gonna happen')
       }
     } catch (e) {
+      return []
+    }
+
+    // Parser results in many false positives, so we need to filter them out
+    // TODO: This is a hack, we should be able to do better
+    // For example, we could define a type analogous to AMAROK_PAYLOAD_ABI
+    // and use that to validate the decoded parameters
+
+    if (functionParameters[0][0].length !== 7) {
       return []
     }
 
