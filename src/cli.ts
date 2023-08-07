@@ -3,9 +3,9 @@
 import { red } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
-import { parseCallDataString } from '.'
-import { initCache, CacheType } from './abi-cache/cache'
+import { CacheType, initCache } from './abi-cache/cache'
 import { stringify } from './lib/stringify'
+import { parseCallDataString } from './parse-call-data-string'
 import {
   bridge,
   bridgeSwap,

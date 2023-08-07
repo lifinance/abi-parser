@@ -50,7 +50,12 @@
     "checkJs": false
   },
   // File Inclusions
-  "include": ["src/**/*", "src/**/*.json", "./.eslintrc.js", "./abis/**/*"],
+  "include": [
+    "src/**/*",
+    "src/**/*.json",
+    "./.eslintrc.js",
+    "./abis/**/*"
+  ],
   "exclude": [],
   // Local developer settings
   "ts-node": {
