@@ -2,6 +2,7 @@ import { AbiCoder } from 'ethers'
 
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
+import { listToSwapData } from '..'
 
 import { AMAROK_PAYLOAD_ABI } from './abis/amarok'
 
@@ -35,11 +36,19 @@ export const parseAmarok = (
       return []
     }
 
+    // We know that amaroks first param is a list of SwapData[] so we can treat it as such
+    const swapDatas = functionParameters[0].map(listToSwapData)
+    const receiver = functionParameters[1] as string
+    const massagedFunctionParams = {
+      swaps: swapDatas,
+      receiver,
+    }
+
     return [
       {
         functionName: 'unnamed (amarok)',
         rawCallData: encodedCallData,
-        functionParameters,
+        functionParameters: massagedFunctionParams,
       } as CallDataInformation,
     ]
   } catch (e) {
