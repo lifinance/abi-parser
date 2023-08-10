@@ -2,6 +2,7 @@ import { AbiCoder } from 'ethers'
 
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
+import { listToSwapData } from '../build-parameter-map'
 
 import { STARGATE_PAYLOAD_ABI } from './abis/stargate'
 
@@ -34,11 +35,24 @@ export const parseStargate = (
       return []
     }
 
+    const txId = functionParameters[0] as string
+    // We know that stargates second param is a list of SwapData[] so we can treat it as such
+    const swapDatas = functionParameters[1].map(listToSwapData)
+
+    const assetId = functionParameters[2] as string
+    const receiver = functionParameters[3] as string
+    const massagedFunctionParams = {
+      transactionId: txId,
+      swaps: swapDatas,
+      assetId,
+      receiver,
+    }
+
     return [
       {
         functionName: 'unnamed (stargate)',
         rawCallData: encodedCallData,
-        functionParameters,
+        functionParameters: massagedFunctionParams,
       } as CallDataInformation,
     ]
   } catch (e) {

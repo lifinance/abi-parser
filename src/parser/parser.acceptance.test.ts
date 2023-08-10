@@ -21,6 +21,7 @@ import {
   StargateDataStruct,
   SwapDataStruct,
 } from './parameter-map'
+import { listToSwapData } from './build-parameter-map'
 
 const validateAndExtract = (
   results: CallDataInformation[]
@@ -140,7 +141,12 @@ describe('Acceptance tests', () => {
       rawCallData
     )
 
-    expect(toolCallData.functionParameters).toStrictEqual(parsed)
+    expect(toolCallData.functionParameters).toStrictEqual({
+      transactionId: parsed[0],
+      swaps: parsed[1].map(listToSwapData),
+      assetId: parsed[2],
+      receiver: parsed[3],
+    })
   })
 
   it('swap + amarok + swap transfer', () => {
@@ -161,6 +167,9 @@ describe('Acceptance tests', () => {
       rawCallData
     )
 
-    expect(toolCallData.functionParameters).toStrictEqual(parsed)
+    expect(toolCallData.functionParameters).toStrictEqual({
+      swaps: parsed[0].map(listToSwapData),
+      receiver: parsed[1],
+    })
   })
 })
