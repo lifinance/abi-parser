@@ -6,8 +6,8 @@ import { CacheType, initCache } from './cache'
 let cache: AbiCache
 
 describe('abi-loader', () => {
-  beforeAll(() => {
-    cache = initCache(CacheType.MEMORY)
+  beforeAll(async () => {
+    cache = await initCache(CacheType.MEMORY)
   })
 
   it('load ABIs from the "abis" directory of the file system', () => {

@@ -15,13 +15,15 @@ type CachedFunctionFragmentsBySighash = {
 }
 export type ContractLocation = { address: string; chain: ChainId }
 
-export class AbiCache {
+export abstract class AbiCache {
   protected cachedAbis: Map<string, Interface> = new Map()
   protected functionFragments: CachedFunctionFragmentsBySighash = {}
 
   constructor() {
     this.loadAbiDirectory(path.join(__dirname, '../../abis'))
   }
+
+  public abstract init(): Promise<AbiCache>
 
   private groupFunctionFragmentsBySighash = (): void => {
     this.functionFragments = {}
@@ -68,6 +70,19 @@ export class AbiCache {
 
         this.loadFromFile(filePath)
       })
+  }
+
+  protected loadFromString(key: string, abiString: string): void {
+    try {
+      const ethersInterface = new Interface(abiString)
+
+      const location: ContractLocation = this.fromKey(key)
+
+      this.cachedAbis.set(this.toKey(location), ethersInterface)
+      this.groupFunctionFragmentsBySighash()
+    } catch (error) {
+      log().error(`Error parsing string: ${(error as Error).message}`)
+    }
   }
 
   protected loadFromFile(fileName: string): void {

@@ -1,7 +1,6 @@
 import { FunctionFragment } from 'ethers'
 
-import { AbiCache } from '../abi-cache/abi-cache'
-import { CacheType, initCache } from '../abi-cache/cache'
+import { AbiCache, CacheType, initCache } from '../abi-cache'
 
 import { parseCallData } from './calldata-parsers/parse-call-data'
 
@@ -15,8 +14,8 @@ const wrappedCallFunctionFragment: FunctionFragment = FunctionFragment.from(
 let cache: AbiCache
 
 describe('parseCallData', () => {
-  beforeAll(() => {
-    cache = initCache(CacheType.MEMORY)
+  beforeAll(async () => {
+    cache = await initCache(CacheType.MEMORY)
   })
 
   afterEach(() => {

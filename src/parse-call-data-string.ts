@@ -1,13 +1,15 @@
-import { AbiCache } from './abi-cache/abi-cache'
-import { CacheType, initCache } from './abi-cache/cache'
-import { cacheCandidates } from './abi-cache/cache-candidates'
+import { AbiCache, CacheType, initCache, cacheCandidates } from './abi-cache'
 import { CallDataInformation } from './parser'
 import { parseCallData } from './parser/calldata-parsers/parse-call-data'
 
 export const parseCallDataString = async (
   callDataString: string,
-  cache: AbiCache = initCache(CacheType.MEMORY)
+  abiCache?: AbiCache
 ): Promise<CallDataInformation[]> => {
+  const cache: AbiCache = abiCache
+    ? abiCache
+    : await initCache(CacheType.MEMORY)
+
   const parsedCandidates: CallDataInformation[] = parseCallData(
     callDataString,
     cache

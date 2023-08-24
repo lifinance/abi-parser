@@ -18,7 +18,7 @@ import {
 dotenv.config()
 
 const run = async () => {
-  const cache = initCache(CacheType.FILE_SYSTEM)
+  const cache = await initCache(CacheType.FILE_SYSTEM)
 
   const callDataStrings =
     process.argv.length === 2
