@@ -1,7 +1,6 @@
 import { AbiCoder } from 'ethers'
 
-import { AbiCache } from '../abi-cache/abi-cache'
-import { CacheType, initCache } from '../abi-cache/cache'
+import { AbiCache, CacheType, initCache } from '../abi-cache'
 import {
   bridge,
   bridgeSwap,
@@ -56,8 +55,8 @@ const validateAndExtractSwapData = (
 let cache: AbiCache
 
 describe('Acceptance tests', () => {
-  beforeAll(() => {
-    cache = initCache(CacheType.MEMORY)
+  beforeAll(async () => {
+    cache = await initCache(CacheType.MEMORY)
   })
 
   it('should parse a swap transfer', () => {

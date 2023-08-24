@@ -7,4 +7,8 @@ export class MemoryAbiCache extends AbiCache {
   protected override persist(key: string, _: AbiInformation): void {
     log().debug(`Using Memory cache, not persisting ABI ${key}`)
   }
+
+  public override init(): Promise<AbiCache> {
+    return Promise.resolve(this)
+  }
 }

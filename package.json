@@ -59,6 +59,7 @@
     "@lifi/types": "^8.3.0",
     "dotenv": "^16.3.1",
     "ethers": "^6.7.0",
+    "ioredis": "^5.3.2",
     "pretty-error": "^4.0.0",
     "superagent": "^8.0.9",
     "superagent-throttle": "^1.0.1",
