@@ -5,7 +5,8 @@ import winston from 'winston'
 type LogLevel = 'error' | 'warn' | 'info' | 'debug'
 
 export type Logger = {
-  [method in LogLevel]: (message: string, info?: unknown) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [method in LogLevel]: (message: string, info?: any) => void
 }
 
 const prettyError = new PrettyError()
