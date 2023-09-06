@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@lifi/types':
-    specifier: ^8.3.0
-    version: 8.3.0
+    specifier: ^8.6.1
+    version: 8.6.1
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -1130,8 +1130,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@lifi/types@8.3.0:
-    resolution: {integrity: sha512-M6uFDvv7Wr+ied2NUF/b3TIIPi5IFxIiJcxY+8gqd4OmRun/1jE0TvySHE4gUN3OdLUFiHRXUzHh0D7vSO/Xuw==}
+  /@lifi/types@8.6.1:
+    resolution: {integrity: sha512-cwgp00msiNwtCCqsbW0y94l26UnSh8y84QTrZi4hEQB3AfcCHaNKLQfnHYw17fYW9wxRremzpW6UL95dqzk2lg==}
     dependencies:
       ethers: 5.7.2
     transitivePeerDependencies:
