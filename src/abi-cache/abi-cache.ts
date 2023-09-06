@@ -3,6 +3,7 @@ import { dataSlice, FunctionFragment, id, Interface } from 'ethers'
 import fs from 'fs'
 import path from 'path'
 
+import { log } from '../lib/logger'
 import { stringify } from '../lib/stringify'
 
 export type AbiInformation = unknown[]
@@ -19,8 +20,6 @@ export class AbiCache {
   protected functionFragments: CachedFunctionFragmentsBySighash = {}
 
   constructor() {
-    // Load shipped ABIs
-    console.log(__dirname)
     this.loadAbiDirectory(path.join(__dirname, '../../abis'))
   }
 
@@ -83,7 +82,7 @@ export class AbiCache {
       this.cachedAbis.set(this.toKey(location), ethersInterface)
       this.groupFunctionFragmentsBySighash()
     } catch (error) {
-      console.error(`Error reading file ${fileName}: ${error}`)
+      log().error(`Error reading file ${fileName}: ${(error as Error).message}`)
     }
   }
 

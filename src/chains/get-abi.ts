@@ -1,8 +1,9 @@
-import { red } from 'ansi-colors'
 import superagent from 'superagent'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Throttle from 'superagent-throttle'
+
+import { log } from '../lib/logger'
 
 import { ChainConfig } from './chain-config'
 
@@ -42,14 +43,12 @@ export const getAbi = async (
     .query(chainConfig.apiKey ? `apiKey=${chainConfig.apiKey}` : {})
 
   if (res.body.message.startsWith('OK')) {
-    // console.log(`loaded abi for ${address}`)
+    log().debug(`loaded abi for ${address}`)
 
     return res.body.result as string
   }
-  console.log(
-    red(
-      `(${res.statusCode}) could not load abi for ${address} on ${chainConfig.chain}: ${res.body.message}`
-    )
+  log().warn(
+    `(${res.statusCode}) could not load abi for ${address} on ${chainConfig.chain}: ${res.body.message}`
   )
 
   return undefined
