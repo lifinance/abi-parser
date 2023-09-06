@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { red } from 'ansi-colors'
 import * as dotenv from 'dotenv'
 
-import { CacheType, initCache } from './abi-cache/cache'
+import { CacheType, initCache } from './abi-cache'
+import { log } from './lib/logger'
 import { stringify } from './lib/stringify'
 import { parseCallDataString } from './parse-call-data-string'
 import {
@@ -33,9 +33,9 @@ const run = async () => {
 
   for (const candidate of parsed) {
     try {
-      console.log(stringify(candidate))
+      log().info(stringify(candidate))
     } catch (e) {
-      console.log(e)
+      log().error((e as Error).message)
     }
   }
 }
@@ -43,6 +43,6 @@ const run = async () => {
 run()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(red(error))
+    log().error((error as Error).message)
     process.exit(1)
   })

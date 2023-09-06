@@ -1,6 +1,6 @@
 {
   "name": "@lifi/abi-parser",
-  "version": "0.0.1-alpha.12",
+  "version": "0.0.1-alpha.13",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "build": "tsc",
     "clean": "rm -rf build",
     "parse-call-data": "ts-node --transpile-only src/cli.ts",
-    "lint": "eslint --ext .ts --ext .js .",
+    "lint": "eslint --ext .ts .",
     "test": "jest"
   },
   "files": [
@@ -57,11 +57,12 @@
   },
   "dependencies": {
     "@lifi/types": "^8.3.0",
-    "ansi-colors": "^4.1.3",
     "dotenv": "^16.3.1",
     "ethers": "^6.7.0",
+    "pretty-error": "^4.0.0",
     "superagent": "^8.0.9",
-    "superagent-throttle": "^1.0.1"
+    "superagent-throttle": "^1.0.1",
+    "winston": "^3.10.0"
   },
   "packageManager": "pnpm@8.6.11"
 }

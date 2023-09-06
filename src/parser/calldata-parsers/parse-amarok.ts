@@ -1,5 +1,6 @@
 import { AbiCoder } from 'ethers'
 
+import { log } from '../../lib/logger'
 import { hexify } from '../hexify'
 import { CallDataInformation } from '../parameter-map'
 import { listToSwapData } from '..'
@@ -21,7 +22,7 @@ export const parseAmarok = (
       const [xxx] = functionParameters
 
       if (!xxx) {
-        console.log('never gonna happen')
+        log().error('never gonna happen')
       }
     } catch (e) {
       return []
