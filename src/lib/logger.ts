@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import PrettyError from 'pretty-error'
 import * as process from 'process'
 import winston from 'winston'
