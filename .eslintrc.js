@@ -61,15 +61,14 @@ module.exports = {
         sourceType: 'module'
     },
     env: {
-        'es6': true,
-        'node': true,
-        'jest/globals': true
+        es6: true,
+        node: true,
+        'jest/globals': true,
     },
     ignorePatterns: ['.idea', '.vscode', 'build', 'node_modules', 'package-lock.json'],
     plugins: ['@typescript-eslint', 'filenames', 'import', 'promise', 'prettier'],
     extends: [
         'eslint:all',
-        'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
@@ -234,7 +233,7 @@ module.exports = {
         {
             files: ['**/*.test.ts'],
             plugins: ['jest', 'jest-formatting'],
-            extends: ['plugin:jest/all', 'plugin:jest-formatting/strict'],
+            extends: ['plugin:jest/recommended', 'plugin:jest-formatting/strict'],
             rules: {
                 '@typescript-eslint/no-var-requires': 'off',
                 '@typescript-eslint/no-explicit-any': 'off',
