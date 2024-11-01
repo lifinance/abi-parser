@@ -19,7 +19,7 @@ export const defaultParser = (
       // Parsers return an empty array if they fail to parse the data
       // First parser to succeed will return the parsed data
       if (Array.isArray(parsedData) && parsedData.length > 0) {
-        return parsedData
+        return parsedData[0]
       }
     }
   }

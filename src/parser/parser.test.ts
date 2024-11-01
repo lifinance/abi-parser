@@ -113,15 +113,13 @@ describe('parseCallData', () => {
     expect(candidates[0]).toStrictEqual({
       functionName: 'wrappedCall',
       functionParameters: {
-        _calldata: [
-          {
-            functionName: 'transfer',
-            functionParameters: {
-              _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
-              _value: '4000000000',
-            },
+        _calldata: {
+          functionName: 'transfer',
+          functionParameters: {
+            _to: '0x633f00E2B2D5742FA69C10CABb3Ffc6E2Ec29f1E',
+            _value: '4000000000',
           },
-        ],
+        },
         _to: '0x292f04a44506c2fd49Bac032E1ca148C35A478c8',
       },
     })

@@ -132,7 +132,7 @@ describe('Acceptance tests', () => {
 
     expect(stargateData).toBeDefined()
 
-    const [toolCallData] = stargateData.callData as CallDataInformation[]
+    const toolCallData = stargateData.callData
 
     expect(toolCallData).toBeDefined()
 
@@ -158,7 +158,7 @@ describe('Acceptance tests', () => {
 
     expect(amarokData).toBeDefined()
 
-    const [toolCallData] = amarokData.callData as CallDataInformation[]
+    const toolCallData = amarokData.callData
 
     expect(toolCallData).toBeDefined()
 
@@ -196,11 +196,7 @@ describe('Acceptance tests', () => {
 
     // checking that callData was parsed as well and is only included once
     const [swapData] = result.functionParameters._swapData
-
-    expect(swapData.callData).toHaveLength(1)
-
     if (isStringObject(swapData.callData)) return
-
-    expect(swapData.callData[0].functionName).toBe('collectTokenInsuranceFees')
+    expect(swapData.callData.functionName).toBe('collectTokenInsuranceFees')
   })
 })

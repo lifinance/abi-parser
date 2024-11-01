@@ -2,7 +2,7 @@ import { Result } from 'ethers'
 
 export type SwapDataStruct = {
   approveTo: string
-  callData: CallDataInformation[] | string
+  callData: CallDataInformation | string
   callTo: string
   fromAmount: BigInteger
   receivingAssetId: string
@@ -10,14 +10,14 @@ export type SwapDataStruct = {
   sendingAssetId: string
 }
 export type AmarokDataStruct = {
-  callData: CallDataInformation[] | string
+  callData: CallDataInformation | string
   callTo: string
   delegate: string
   relayerFee: BigInteger
   slippageTol: BigInteger
 }
 export type StargateDataStruct = {
-  callData: CallDataInformation[] | string
+  callData: CallDataInformation | string
   callTo: string
   dstGasForCall: BigInteger
   dstPoolId: BigInteger
