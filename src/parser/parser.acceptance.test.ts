@@ -4,7 +4,6 @@ import { isStringObject } from 'util/types'
 import { AbiCache, CacheType, initCache } from '../abi-cache'
 import {
   bridge,
-  bridgeSwap,
   collectTokenInsuranceFees,
   feeBridge,
   optimizedSwap,
@@ -85,8 +84,7 @@ describe('Acceptance tests', () => {
     expect(swapDataCalls.every(isCalldataInformation)).toBe(true)
   })
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('should parse a swap(fee-collection) + bridge transfer', () => {
+  it('should parse a swap(fee-collection) + bridge transfer', () => {
     const results = parseCallData(feeBridge, cache)
     const result = validateAndExtract(results)
     const swapData = validateAndExtractSwapData(result)
@@ -94,33 +92,6 @@ describe('Acceptance tests', () => {
 
     expect(swapDataCalls).toBeDefined()
     expect(swapDataCalls.every(isCalldataInformation)).toBe(true)
-  })
-
-  // eslint-disable-next-line jest/no-disabled-tests
-  it.skip('bridge + swap transfer', () => {
-    const results = parseCallData(bridgeSwap, cache)
-    const result = validateAndExtract(results)
-
-    const amarokData = result.functionParameters._amarokData
-
-    expect(amarokData).toBeDefined()
-
-    if (!amarokData) return
-
-    const toolCallData = amarokData.callData
-
-    expect(toolCallData).toBeDefined()
-
-    if (typeof toolCallData === 'string') return
-
-    const rawCallData =
-      '0x0000000000000000000000000000000000000000000000000000000000000040000000000000000000000000552008c0f6870c2f77e5cc1d2eb9bdff03e30ea0000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000001b02da8cb0d097eb8d57a175b88c7d8b479975060000000000000000000000001b02da8cb0d097eb8d57a175b88c7d8b479975060000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa841740000000000000000000000000b3f868e0be5597d5db7feb59e1cadbb0fdda50a00000000000000000000000000000000000000000000000000000000000ec8b500000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010438ed173900000000000000000000000000000000000000000000000000000000000ec8b50000000000000000000000000000000000000000000000000ab39f39a4a41bd800000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000dd1305150d27aecc60c066630105db419977e367000000000000000000000000000000000000000000000000000000006411c21700000000000000000000000000000000000000000000000000000000000000020000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa841740000000000000000000000000b3f868e0be5597d5db7feb59e1cadbb0fdda50a00000000000000000000000000000000000000000000000000000000'
-    const parsed = AbiCoder.defaultAbiCoder().decode(
-      AMAROK_PAYLOAD_ABI,
-      rawCallData
-    )
-
-    expect(toolCallData.functionParameters).toStrictEqual(parsed)
   })
 
   it('swap + stargate + swap transfer', () => {

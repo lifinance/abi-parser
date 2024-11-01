@@ -8,7 +8,6 @@ import { stringify } from './lib/stringify'
 import { parseCallDataString } from './parse-call-data-string'
 import {
   bridge,
-  bridgeSwap,
   feeBridge,
   stargateSwap,
   swap,
@@ -22,7 +21,7 @@ const run = async () => {
 
   const callDataStrings =
     process.argv.length === 2
-      ? [swap, bridge, stargateSwap, bridgeSwap, swapBridge, feeBridge]
+      ? [swap, bridge, stargateSwap, swapBridge, feeBridge]
       : process.argv.slice(2)
 
   const parsed = await Promise.all(
