@@ -1,4 +1,5 @@
 import { AbiCoder } from 'ethers'
+import { isStringObject } from 'util/types'
 
 import { AbiCache, CacheType, initCache } from '../abi-cache'
 import {
@@ -23,7 +24,6 @@ import {
   SwapDataStruct,
 } from './parameter-map'
 import { listToSwapData } from './build-parameter-map'
-import { isStringObject } from 'util/types'
 
 const validateAndExtract = (
   results: CallDataInformation[]
@@ -178,21 +178,24 @@ describe('Acceptance tests', () => {
   it('parse advanced swap functions', () => {
     const results = parseCallData(optimizedSwap, cache)
     const result = validateAndExtract(results)
+
     expect(result.functionName).toBe('swapTokensSingleV3ERC20ToNative')
   })
 
   it('parse swap calldata: collectTokenInsuranceFees', () => {
     const results = parseCallData(collectTokenInsuranceFees, cache)
     const result = validateAndExtract(results)
+
     expect(result.functionParameters._swapData).toHaveLength(1)
-    if (!result.functionParameters._swapData)
-      return
+
+    if (!result.functionParameters._swapData) return
 
     // checking that callData was parsed as well and is only included once
-    const swapData = result.functionParameters._swapData[0]
+    const [swapData] = result.functionParameters._swapData
+
     expect(swapData.callData).toHaveLength(1)
-    if (isStringObject(swapData.callData))
-      return
+
+    if (isStringObject(swapData.callData)) return
 
     expect(swapData.callData[0].functionName).toBe('collectTokenInsuranceFees')
   })
