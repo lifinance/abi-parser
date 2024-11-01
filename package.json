@@ -25,7 +25,8 @@
     "parse-call-data": "ts-node --transpile-only src/cli.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "jest"
+    "test": "jest",
+    "pre-commit": "pnpm lint:fix && pnpm build && pnpm test"
   },
   "files": [
     "dist",
