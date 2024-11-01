@@ -24,7 +24,7 @@ export const parseStargate = (
       if (!xxx) {
         log().error('never gonna happen')
       }
-    } catch (e) {
+    } catch (_) {
       return []
     }
 
@@ -56,7 +56,7 @@ export const parseStargate = (
         functionParameters: massagedFunctionParams,
       } as CallDataInformation,
     ]
-  } catch (e) {
+  } catch (_) {
     return []
   }
 }

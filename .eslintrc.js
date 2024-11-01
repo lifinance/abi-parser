@@ -142,7 +142,14 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'error',
         '@typescript-eslint/naming-convention': ['error', ...namingConventions],
         '@typescript-eslint/no-shadow': 'error',
-        '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true, varsIgnorePattern: '^_+$' }],
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_',
+          },
+        ],
         '@typescript-eslint/no-use-before-define': 'error',
 
         // https://github.com/benmosher/eslint-plugin-import/tree/master/docs/rules

@@ -24,7 +24,7 @@ export const parseAmarok = (
       if (!xxx) {
         log().error('never gonna happen')
       }
-    } catch (e) {
+    } catch (_) {
       return []
     }
 
@@ -52,7 +52,7 @@ export const parseAmarok = (
         functionParameters: massagedFunctionParams,
       } as CallDataInformation,
     ]
-  } catch (e) {
+  } catch (_) {
     return []
   }
 }

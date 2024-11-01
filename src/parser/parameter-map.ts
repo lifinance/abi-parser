@@ -38,7 +38,7 @@ export type ParameterValue =
   | string
 export type ParameterMap = {
   [parameterName: string]: ParameterValue
-  _swapData?: Array<SwapDataStruct>
+  _swapData?: SwapDataStruct | Array<SwapDataStruct>
   _amarokData?: AmarokDataStruct
   _stargateData?: StargateDataStruct
 }

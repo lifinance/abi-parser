@@ -12,10 +12,15 @@ export const cacheCandidates = async (
   cache: AbiCache,
   c: CallDataInformation
 ): Promise<void> => {
+  const swapDataArray = Array.isArray(c.functionParameters._swapData)
+    ? c.functionParameters._swapData
+    : typeof c.functionParameters._swapData === 'object'
+      ? [c.functionParameters._swapData]
+      : []
+
   await Promise.all(
     [
-      // eslint-disable-next-line no-underscore-dangle
-      ...(c.functionParameters._swapData || []),
+      ...swapDataArray,
       // eslint-disable-next-line no-underscore-dangle
       c.functionParameters._amarokData,
       // eslint-disable-next-line no-underscore-dangle

@@ -188,7 +188,11 @@ describe('Acceptance tests', () => {
 
     expect(result.functionParameters._swapData).toHaveLength(1)
 
-    if (!result.functionParameters._swapData) return
+    if (
+      !result.functionParameters._swapData ||
+      !Array.isArray(result.functionParameters._swapData)
+    )
+      return
 
     // checking that callData was parsed as well and is only included once
     const [swapData] = result.functionParameters._swapData
