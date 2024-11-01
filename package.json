@@ -24,6 +24,7 @@
     "clean": "rm -rf build",
     "parse-call-data": "ts-node --transpile-only src/cli.ts",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "test": "jest"
   },
   "files": [
