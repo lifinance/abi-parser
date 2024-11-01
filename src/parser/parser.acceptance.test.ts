@@ -196,7 +196,9 @@ describe('Acceptance tests', () => {
 
     // checking that callData was parsed as well and is only included once
     const [swapData] = result.functionParameters._swapData
+
     if (isStringObject(swapData.callData)) return
+
     expect(swapData.callData.functionName).toBe('collectTokenInsuranceFees')
   })
 })
